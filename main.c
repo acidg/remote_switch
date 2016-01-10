@@ -1,7 +1,10 @@
-#include <avr/io.h>
-#include "spi.h"
+#include "uart.h"
 
 int main(void) {
-    return 0;
+    uart_init();
+    while(1) {
+        uart_print((uint8_t*) "HELLO WORLD!\n\r");
+    }
 
+    return 0;
 }

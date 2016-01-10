@@ -1,3 +1,7 @@
+/**
+ * Uses Timer1 and OCR1A to send data via uart
+ */
+
 #ifndef UART_H
 #define UART_H
 
@@ -5,12 +9,13 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define TX_PIN     PB0     // OC1A on Mega8
-#define TX_DDR  DDRB
+#define BAUDRATE 9600
 
-#define BIT_TIME    (uint16_t)((F_CPU + BAUD/2) / BAUD)
+#define TX_PIN PB0
+#define TX_DDR DDRB
+#define TX_PORT PORTB
 
-void uart_init(uint32_t baud);
+void uart_init();
 
 void uart_transmit(uint8_t val);
 
