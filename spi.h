@@ -7,9 +7,9 @@
 
 //USI ports and pins
 #define SPI_DDR_PORT DDRB
-#define USCK_DD_PIN DDB2
-#define DO_DD_PIN DDB1
-#define DI_DD_PIN DDB0
+#define SCK_DD_PIN DDB2
+#define SDO_DD_PIN DDB1
+#define SDI_DD_PIN DDB0
 
 //SPI data modes
 #define SPI_MODE0 0x00

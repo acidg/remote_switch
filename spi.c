@@ -3,9 +3,9 @@
 void spi_init(void) {
     USICR &= ~(_BV(USISIE) | _BV(USIOIE) | _BV(USIWM1));
     USICR |= _BV(USIWM0) | _BV(USICS1) | _BV(USICLK);
-    SPI_DDR_PORT |= _BV(USCK_DD_PIN);   //set the USCK pin as output
-    SPI_DDR_PORT |= _BV(DO_DD_PIN);     //set the DO pin as output
-    SPI_DDR_PORT &= ~_BV(DI_DD_PIN);    //set the DI pin as input
+    SPI_DDR_PORT |= _BV(SCK_DD_PIN);   //set the USCK pin as output
+    SPI_DDR_PORT |= _BV(SDO_DD_PIN);     //set the DO pin as output
+    SPI_DDR_PORT &= ~_BV(SDI_DD_PIN);    //set the DI pin as input
 }
 
 void spi_setDataMode(uint8_t spiDataMode) {
@@ -19,7 +19,10 @@ uint8_t spi_transfer(uint8_t spiData) {
     USIDR = spiData;
     USISR = _BV(USIOIF);                //clear counter and counter overflow interrupt flag
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { //ensure a consistent clock period
-        while (!(USISR & _BV(USIOIF))) USICR |= _BV(USITC);
+        while (!(USISR & _BV(USIOIF))) {
+            USICR |= _BV(USITC);        // Toggle SCK full speed, until USIOIF is set (all data exchanged)
+        }
+
     }
     return USIDR;
 }
